@@ -10,7 +10,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField]
     private AudioSource musicSource;
 
-    private Coroutine currentFadeCoroutine; // Tracks the active fade coroutine
+    private Coroutine currentFadeCoroutine; // Coroutine de fade ativa
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class MusicManager : MonoBehaviour
             Debug.LogWarning($"[MusicManager] Track '{trackName}' não encontrada.");
             return;
         }
-        if (musicSource.clip == clip && musicSource.isPlaying) return; // evita re-crossfade da mesma track
+        if (musicSource.clip == clip && musicSource.isPlaying) return; // Evitar re-crossfade da mesma track
 
         if (currentFadeCoroutine != null) StopCoroutine(currentFadeCoroutine);
         currentFadeCoroutine = StartCoroutine(AnimateMusicCrossfade(clip, fadeDuration));
@@ -52,7 +52,7 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator AnimateMusicCrossfade(AudioClip nextTrack, float fadeDuration)
     {
-        // Fade out current track
+        // Fade out do track atual
         float percent = 0;
         while (percent < 1)
         {
@@ -61,11 +61,11 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        // Switch to new track
+        // Mudar para novo track
         musicSource.clip = nextTrack;
         musicSource.Play();
 
-        // Fade in new track
+        // Fade in do novo track
         percent = 0;
         while (percent < 1)
         {
@@ -74,7 +74,7 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        // Ensure volume is exactly 1 and clear the coroutine reference
+        // Garantir que o volume está exatamente em 1 e limpar a referência da coroutine
         musicSource.volume = 1;
         currentFadeCoroutine = null;
     }
@@ -84,7 +84,7 @@ public class MusicManager : MonoBehaviour
         float startVolume = musicSource.volume;
         float percent = 0;
 
-        // Fade out to zero
+        // Fade out para zero
         while (percent < 1)
         {
             percent += Time.deltaTime / fadeDuration;
@@ -92,7 +92,7 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        // Stop playback and reset volume
+        // Parar reprodução e redefinir volume
         musicSource.Stop();
         musicSource.volume = 0;
         currentFadeCoroutine = null;

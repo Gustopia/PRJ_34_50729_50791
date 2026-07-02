@@ -1,20 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Orbital preview camera à la Fallout 4 / Fortnite character screen.
-/// Suporta um único modelo ou vários filhos de um Empty GameObject.
-/// Compatível com Unity 6 + New Input System.
-/// </summary>
 [RequireComponent(typeof(Camera))]
 public class OrbitPreviewCamera : MonoBehaviour
 {
-    // ─────────────────────────────────────────────
-    //  Inspector
-    // ─────────────────────────────────────────────
-
     [Header("Target")]
-    [Tooltip("Arrasta aqui o Transform do modelo (ou do Empty pai dos meshes).")]
+    [Tooltip("Transform do modelo ou do Empty parent")]
     [SerializeField] private Transform target;
 
     [Header("Orbit Settings")]
@@ -26,10 +17,10 @@ public class OrbitPreviewCamera : MonoBehaviour
     [SerializeField] private float zoomSensitivity = 0.15f;
     [SerializeField]
     [Range(0.01f, 0.99f)]
-    private float minZoomFactor = 0.25f;   // % do raio calculado
+    private float minZoomFactor = 0.25f; // Percentagem do raio calculado
     [SerializeField]
     [Range(1.01f, 5f)]
-    private float maxZoomFactor = 2.5f;    // % do raio calculado
+    private float maxZoomFactor = 2.5f; // Percentagem do raio calculado
 
     [Header("Smoothing")]
     [SerializeField][Range(1f, 30f)] private float orbitSmoothing = 12f;
@@ -39,13 +30,9 @@ public class OrbitPreviewCamera : MonoBehaviour
     [SerializeField] private float initialYaw = 0f;
     [SerializeField] private float initialPitch = 15f;
 
-    // ─────────────────────────────────────────────
-    //  Estado interno
-    // ─────────────────────────────────────────────
-
     private Camera _cam;
-    private Vector3 _pivotPoint;          // centro da bounding box
-    private float _boundingRadius;      // raio calculado
+    private Vector3 _pivotPoint; // Centro da bounding box
+    private float _boundingRadius; // Raio calculado
 
     private float _yaw;
     private float _pitch;
@@ -62,10 +49,6 @@ public class OrbitPreviewCamera : MonoBehaviour
     private Transform _pendingTarget;
     private bool _isInitialized;
 
-    // ─────────────────────────────────────────────
-    //  Unity lifecycle
-    // ─────────────────────────────────────────────
-
     private void Awake()
     {
         EnsureCameraRef();
@@ -73,8 +56,8 @@ public class OrbitPreviewCamera : MonoBehaviour
 
     private void Start()
     {
-        // Se SetTarget() foi chamado antes de Start() (ex.: pelo Bootstrapper no Awake),
-        // _pendingTarget já foi guardado — aplica-o agora que tudo está inicializado.
+        // Se SetTarget() foi chamado antes de Start(),
+        // _pendingTarget já foi guardado — aplica-o agora que tudo está inicializado
         if (_pendingTarget != null)
         {
             CalculateBounds(_pendingTarget);
@@ -89,7 +72,6 @@ public class OrbitPreviewCamera : MonoBehaviour
         _isInitialized = true;
     }
 
-    /// <summary>Garante que _cam está preenchida, mesmo antes do Awake.</summary>
     private void EnsureCameraRef()
     {
         if (_cam == null)
@@ -108,14 +90,8 @@ public class OrbitPreviewCamera : MonoBehaviour
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  API Pública
-    // ─────────────────────────────────────────────
-
-    /// <summary>
-    /// Define o alvo em runtime e recalcula os bounds.
-    /// Pode ser chamado a qualquer momento — antes ou depois de Start().
-    /// </summary>
+    // Define o alvo em runtime e recalcula os bounds
+    // Pode ser chamado a qualquer momento, antes ou depois de Start()
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
@@ -125,7 +101,7 @@ public class OrbitPreviewCamera : MonoBehaviour
 
         if (!_isInitialized)
         {
-            // Start() ainda não correu: guarda para aplicar depois
+            // Se Start() ainda não correu, guarda para aplicar depois
             _pendingTarget = newTarget;
             return;
         }
@@ -134,24 +110,20 @@ public class OrbitPreviewCamera : MonoBehaviour
         ResetAngles();
     }
 
-    /// <summary>Repõe câmara na posição inicial sem mudar o alvo.</summary>
+    // Mete a camara na posição inicial sem mudar o alvo
     public void ResetView()
     {
         ResetAngles();
     }
 
-    // ─────────────────────────────────────────────
-    //  Bounds
-    // ─────────────────────────────────────────────
-
     private void CalculateBounds(Transform root)
     {
-        // Recolhe todos os Renderers no root e nos seus filhos
+        // Recolhe todos os renderers no root e nos seus filhos
         Renderer[] renderers = root.GetComponentsInChildren<Renderer>(includeInactive: false);
 
         if (renderers.Length == 0)
         {
-            // Fallback: usa a posição do próprio Transform
+            // Usa a posição do próprio transform
             _pivotPoint = root.position;
             _boundingRadius = 1f;
             Debug.LogWarning($"[OrbitPreviewCamera] Nenhum Renderer encontrado em '{root.name}'. A usar bounds padrão.");
@@ -164,38 +136,29 @@ public class OrbitPreviewCamera : MonoBehaviour
             combined.Encapsulate(renderers[i].bounds);
 
         _pivotPoint = combined.center;
-        _boundingRadius = combined.extents.magnitude;   // diagonal do cubo / 2
+        _boundingRadius = combined.extents.magnitude; // Diagonal do cubo / 2
 
         float minDist = _boundingRadius * minZoomFactor;
         float maxDist = _boundingRadius * maxZoomFactor;
 
-        // Posição inicial: afasta a câmara de modo a ver o modelo todo
+        // Posição inicial, afasta a camara de modo a ver o modelo todo
         float fovRad = _cam.fieldOfView * Mathf.Deg2Rad * 0.5f;
         float idealDist = (_boundingRadius / Mathf.Tan(fovRad)) * 1.1f;
         _targetDistance = Mathf.Clamp(idealDist, minDist, maxDist);
         _currentDistance = _targetDistance;
     }
 
-    // ─────────────────────────────────────────────
-    //  Ângulos iniciais
-    // ─────────────────────────────────────────────
-
     private void ResetAngles()
     {
         _yaw = _currentYaw = initialYaw;
         _pitch = _currentPitch = Mathf.Clamp(initialPitch, minVerticalAngle, maxVerticalAngle);
     }
-
-    // ─────────────────────────────────────────────
-    //  Input (New Input System via polling)
-    // ─────────────────────────────────────────────
-
     private void HandleInput()
     {
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // ── Arrastar com botão esquerdo ──
+        // Arrastar com botão esquerdo do rato
         if (mouse.leftButton.wasPressedThisFrame)
         {
             _isDragging = true;
@@ -211,11 +174,11 @@ public class OrbitPreviewCamera : MonoBehaviour
             _lastMousePos = currentPos;
 
             _yaw += delta.x * orbitSensitivity;
-            _pitch -= delta.y * orbitSensitivity;   // invertido: arrastar para cima = olhar para baixo
+            _pitch -= delta.y * orbitSensitivity;   // Invertido, ou seja, arrastar para cima = olhar para baixo
             _pitch = Mathf.Clamp(_pitch, minVerticalAngle, maxVerticalAngle);
         }
 
-        // ── Zoom com roda do rato ──
+        // Zoom com roda do rato
         float scroll = mouse.scroll.ReadValue().y;
         if (Mathf.Abs(scroll) > 0.001f)
         {
@@ -227,10 +190,6 @@ public class OrbitPreviewCamera : MonoBehaviour
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  Smoothing
-    // ─────────────────────────────────────────────
-
     private void ApplySmoothing()
     {
         float t = Time.deltaTime;
@@ -238,10 +197,6 @@ public class OrbitPreviewCamera : MonoBehaviour
         _currentPitch = Mathf.LerpAngle(_currentPitch, _pitch, orbitSmoothing * t);
         _currentDistance = Mathf.Lerp(_currentDistance, _targetDistance, zoomSmoothing * t);
     }
-
-    // ─────────────────────────────────────────────
-    //  Posicionamento da câmara
-    // ─────────────────────────────────────────────
 
     private void UpdateCameraTransform()
     {
@@ -253,10 +208,6 @@ public class OrbitPreviewCamera : MonoBehaviour
         transform.position = _pivotPoint + offset;
         transform.LookAt(_pivotPoint);
     }
-
-    // ─────────────────────────────────────────────
-    //  Gizmos (editor only)
-    // ─────────────────────────────────────────────
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

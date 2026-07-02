@@ -16,7 +16,7 @@ public class SoundManager : MonoBehaviour
     private AudioMixerGroup sfxGroup;
 
     [Header("Loops / Ambient")]
-    [SerializeField] private AudioMixerGroup loopGroup; // pode ser o mesmo que sfxGroup
+    [SerializeField] private AudioMixerGroup loopGroup;
     [SerializeField] private float defaultLoopFade = 1f;
 
     private readonly Dictionary<string, AudioSource> activeLoops = new();
@@ -65,12 +65,11 @@ public class SoundManager : MonoBehaviour
         sfx2DSource.Stop();
     }
 
-    // ---------- LOOPS / AMBIENT ----------
+    // Loops de sons ambiente
     public void PlayLoop(string soundName, float fadeDuration = -1f)
     {
         if (fadeDuration < 0) fadeDuration = defaultLoopFade;
 
-        // Já está activo: se estava a desaparecer, voltar a fazer fade-in
         if (activeLoops.TryGetValue(soundName, out var existing))
         {
             if (activeFades.TryGetValue(soundName, out var c) && c != null)
@@ -114,7 +113,7 @@ public class SoundManager : MonoBehaviour
         foreach (var k in keys) StopLoop(k, fadeDuration);
     }
 
-    /// <summary>Pára loops fora da lista, arranca os novos, mantém os que coincidem.</summary>
+    // Para loops fora da lista, arranca os novos, mantém os que coincidem
     public void SyncLoops(IEnumerable<string> wanted, float fadeDuration = -1f)
     {
         var wantedSet = new HashSet<string>(wanted ?? System.Array.Empty<string>());

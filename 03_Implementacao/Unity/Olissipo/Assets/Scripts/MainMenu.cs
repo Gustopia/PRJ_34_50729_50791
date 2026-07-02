@@ -13,16 +13,11 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         LoadVolume();
-        //MusicManager.Instance.PlayMusic("MainMenu");
-        //SoundManager.Instance.PlaySound2D("Cave");
     }
 
     public void Play()
     {
-        //SceneManager.LoadScene("Olissipo_Superficie");
         LevelManager.Instance.LoadScene("Olissipo_Superficie", "CrossFade");
-        //MusicManager.Instance.StopMusic();
-        //SoundManager.Instance.StopAll2D();  
     }
 
     public void ModelView3D()

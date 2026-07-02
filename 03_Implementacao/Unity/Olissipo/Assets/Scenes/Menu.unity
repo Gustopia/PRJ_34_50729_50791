@@ -496,7 +496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: title
+  m_text: "hist\xF3ria aumentada\nde olissipo"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 19ffc616b5b990e48835b023f058cfe7, type: 2}
   m_sharedMaterial: {fileID: -8886126326068738287, guid: 19ffc616b5b990e48835b023f058cfe7, type: 2}
@@ -523,8 +523,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
-  m_fontSizeBase: 150
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 10
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -2850,8 +2850,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -143.03864}
-  m_SizeDelta: {x: 637.4982, y: 540.2904}
+  m_AnchoredPosition: {x: 0, y: -210.11664}
+  m_SizeDelta: {x: 637.4982, y: 564.0409}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1743067998
 GameObject:

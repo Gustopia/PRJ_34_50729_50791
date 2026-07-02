@@ -57,7 +57,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    // ---------- PAUSA ----------
+    // Pausa
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
@@ -85,7 +85,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    // ---------- OPÇÕES ----------
+    // Opcções
     public void OpenOptions()
     {
         pauseMenuUI.SetActive(false);
@@ -99,7 +99,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
     }
 
-    // ---------- MENU PRINCIPAL ----------
+    // Menu Principal
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
@@ -111,7 +111,7 @@ public class PauseMenu : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
 
-    // ---------- VOLUME ----------
+    // Volume
     public void UpdateMusicVolume(float volume)
     {
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20f);
@@ -127,7 +127,7 @@ public class PauseMenu : MonoBehaviour
         audioMixer.SetFloat("VoiceVolume", Mathf.Log10(volume) * 20f);
     }
 
-    // ---------- TOGGLES ----------
+    // Toggles
     public void ToggleUIText(bool enabled)
     {
         if (uiTextElements == null) return;
@@ -148,7 +148,7 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetInt("FlyingEnabled", enabled ? 1 : 0);
     }
 
-    // ---------- SAVE / LOAD ----------
+    // Save e load
     private void SaveSettings()
     {
 

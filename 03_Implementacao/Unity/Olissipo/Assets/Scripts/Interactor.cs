@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IInteractable
 {
     void Interact();
-    string GetPrompt() => "[E] - Open Door"; // default; objects can override
+    string GetPrompt() => "[E] - Open Door"; // Texto default; objetos podem fazer override
 }
 
 public class Interactor : MonoBehaviour
@@ -13,8 +13,8 @@ public class Interactor : MonoBehaviour
     public float InteractRange = 3f;
 
     [Header("UI")]
-    public GameObject InteractPrompt; // parent GameObject to show/hide
-    public TMP_Text PromptText;       // optional, for per-object text
+    public GameObject InteractPrompt;
+    public TMP_Text PromptText;
 
     private IInteractable _currentTarget;
 
@@ -37,7 +37,7 @@ public class Interactor : MonoBehaviour
         // Toggle UI
         bool hasTarget = _currentTarget != null;
         SetPromptVisible(hasTarget);
-        if (hasTarget && PromptText != null) 
+        if (hasTarget && PromptText != null)
             PromptText.text = _currentTarget.GetPrompt();
 
         // Interact

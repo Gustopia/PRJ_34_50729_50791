@@ -7,6 +7,13 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float groundDrag;
 
+    [Header("Jumping")]
+    public float jumpForce;
+    public float jumpCooldown;
+    public float airMultiplier;
+    private bool readyToJump;
+    public KeyCode jumpKey = KeyCode.Space;
+
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
@@ -16,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isFlying = false;
     public float flySpeed = 12f;
     public float flyDrag = 6f;
-    //public KeyCode toggleFlyKey = KeyCode.F;
     public KeyCode ascendKey = KeyCode.Space;
     public KeyCode descendKey = KeyCode.LeftControl;
 
@@ -25,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Footsteps")]
     public string footstepSoundName = "Footstep";
-    public float footstepInterval = 0.4f;      
+    public float footstepInterval = 0.4f;
     private float footstepTimer;
 
     private float horizontalInput;
@@ -42,45 +48,51 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        readyToJump = true;
     }
 
     private void Update()
     {
-        GetInput();
-        UpdateGroundedState();
-        UpdateDrag();
-
-        // bloquear inputs quando o jogo estiver pausado
+        // Bloquear inputs quando o jogo estiver pausado
         if (PauseMenu.IsPaused)
         {
-            horizontalInput = 0; 
-            verticalInput = 0; 
+            horizontalInput = 0;
+            verticalInput = 0;
             flyUpInput = 0;
             return;
         }
 
+        MyInput();
+        UpdateGroundedState();
+        UpdateDrag();
         HandleFootsteps();
     }
 
     private void FixedUpdate()
     {
         if (PauseMenu.IsPaused) return;
-        
+
         if (!isFlying)
-            HandleGroundMovement();
+            MovePlayer();
         else
             HandleFlyingMovement();
 
         SpeedControl();
     }
 
-    private void GetInput()
+    private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         flyUpInput = 0f;
 
-        //if (Input.GetKeyDown(toggleFlyKey)) ToggleFly();
+        // Quando saltar
+        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        {
+            readyToJump = false;
+            Jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
 
         if (isFlying)
         {
@@ -91,30 +103,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ToggleFly()
-    {
-        isFlying = !isFlying;
-        rb.useGravity = !isFlying;
-
-        if (isFlying)
-        {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        }
-    }
-
     public void SetFlying(bool enabled)
     {
         isFlying = enabled;
 
-        if(rb == null) rb = GetComponent<Rigidbody>();
+        if (rb == null) rb = GetComponent<Rigidbody>();
         rb.useGravity = !isFlying;
 
         if (isFlying)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         }
+
+        // opcional...
+        UpdateGroundedState();
+        UpdateDrag();
     }
-    
+
     private RaycastHit groundHit;
 
     private void UpdateGroundedState()
@@ -144,11 +149,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleGroundMovement()
+    private void MovePlayer()
     {
-        // Calculate movement direction relative to player orientation
+        // Calcular a direção do movimento em relação à orientação do jogador
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        rb.AddForce(moveDirection.normalized * moveSpeed * groundForceMultiplier, ForceMode.Force);
+        
+        // No ground
+        if(grounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * groundForceMultiplier, ForceMode.Force);
+        }
+        else if(!grounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * groundForceMultiplier * airMultiplier, ForceMode.Force);
+        }
     }
 
     private void HandleFlyingMovement()
@@ -172,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isFlying)
         {
-            // Ground: limit horizontal speed only
+            // Ground: limitar apenas a velocidade horizontal
             Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             if (flatVel.magnitude > moveSpeed)
             {
@@ -182,12 +196,25 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Flying: limit overall speed (all axes)
+            // Flying: limitar a velocidade geral (todos os eixos)
             if (rb.linearVelocity.magnitude > flySpeed)
             {
                 rb.linearVelocity = rb.linearVelocity.normalized * flySpeed;
             }
         }
+    }
+
+    private void Jump()
+    {
+        // Reset velocidade y (veritcal)
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void ResetJump()
+    {
+        readyToJump = true;
     }
 
     private void HandleFootsteps()
@@ -211,7 +238,7 @@ public class PlayerMovement : MonoBehaviour
         footstepTimer -= Time.deltaTime;
         if (footstepTimer <= 0f)
         {
-            // Default footstep, overridden by a FootstepSurface component if present
+            // Footsteps default, substituídos por um componente FootstepSurface se presente
             string soundToPlay = footstepSoundName;
             var surface = groundHit.collider != null
                 ? groundHit.collider.GetComponent<FootstepSurface>()

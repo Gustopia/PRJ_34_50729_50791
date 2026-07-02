@@ -371,7 +371,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '[Esc] - Exit
 
-    Left Mouse - Move
+    Mouse Left - Move
 
     Scroll - Zoom In/Out'
   m_isRightToLeft: 0

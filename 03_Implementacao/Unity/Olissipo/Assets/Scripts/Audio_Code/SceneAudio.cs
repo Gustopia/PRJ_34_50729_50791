@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class SceneAudio : MonoBehaviour
 {
-    [Tooltip("Nome da track de música (deixar vazio para parar a música).")]
+    [Tooltip("Nome da música")]
     [SerializeField] private string musicTrack;
 
-    [Tooltip("Loops ambientes que devem estar a tocar nesta cena.")]
+    [Tooltip("Loops de sons ambientes da cena")]
     [SerializeField] private string[] ambientLoops;
 
     [SerializeField] private float fadeDuration = 1f;

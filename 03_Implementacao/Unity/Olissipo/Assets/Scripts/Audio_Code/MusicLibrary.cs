@@ -13,7 +13,8 @@ public class MusicLibrary : MonoBehaviour
 
     public AudioClip GetClipFromName(string trackName)
     {
-        foreach (var track in tracks){
+        foreach (var track in tracks)
+        {
             if (track.trackName == trackName)
             {
                 return track.clip;
