@@ -1,7 +1,14 @@
+/*
+ * Este script é utilizado para criar uma transição de fade in/out entre cenas.
+ * Utiliza a biblioteca DOTween para animar o efeito de fade in/out de um CanvasGroup, 
+ * que é atribuido à variável crossFade.
+ */
+
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
+// #my_code
 public class CrossFade : SceneTransition
 {
     public CanvasGroup crossFade;

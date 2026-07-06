@@ -1,6 +1,13 @@
+/*
+ * Este script controla o movimento do jogador, incluindo andar, saltar e voar.
+ * Gere a detecção do chão /ground check) e a aplicação de arrasto (drag) dependendo do estado do jogador (no chão, no ar a voar).
+ * Adiciona também efeitos sonoros de passos e limita a velocidade do jogador.
+ */
+
 using System;
 using UnityEngine;
 
+// #my_code
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
@@ -115,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         }
 
-        // opcional...
         UpdateGroundedState();
         UpdateDrag();
     }

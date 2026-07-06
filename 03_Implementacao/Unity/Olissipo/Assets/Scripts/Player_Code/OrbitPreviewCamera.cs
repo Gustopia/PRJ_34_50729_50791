@@ -1,3 +1,17 @@
+/*
+ * Este script permite que a câmera orbite em torno de um alvo (target) com controle de rotação e zoom.
+ * Calcula automaticamente os bounds do alvo para definir a distância inicial da câmera.
+ * 
+ * Funcionalidades:
+ * - Arrastar com o botão esquerdo do rato para orbitar ao redor do alvo.
+ * - Usar scroll para dar zoom in/out.
+ * - Respeita limites de ângulo vertical e distância de zoom.
+ * - Pode ser usado em runtime para definir um novo alvo com SetTarget().
+ * 
+ * Requisitos:
+ * - O GameObject deve ter um componente Camera.
+ */
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,7 +71,7 @@ public class OrbitPreviewCamera : MonoBehaviour
     private void Start()
     {
         // Se SetTarget() foi chamado antes de Start(),
-        // _pendingTarget já foi guardado — aplica-o agora que tudo está inicializado
+        // _pendingTarget já foi guardado e aplica-o agora que tudo está inicializado
         if (_pendingTarget != null)
         {
             CalculateBounds(_pendingTarget);
@@ -70,12 +84,6 @@ public class OrbitPreviewCamera : MonoBehaviour
 
         ResetAngles();
         _isInitialized = true;
-    }
-
-    private void EnsureCameraRef()
-    {
-        if (_cam == null)
-            _cam = GetComponent<Camera>();
     }
 
     private void Update()
@@ -114,6 +122,12 @@ public class OrbitPreviewCamera : MonoBehaviour
     public void ResetView()
     {
         ResetAngles();
+    }
+
+    private void EnsureCameraRef()
+    {
+        if (_cam == null)
+            _cam = GetComponent<Camera>();
     }
 
     private void CalculateBounds(Transform root)
@@ -208,15 +222,4 @@ public class OrbitPreviewCamera : MonoBehaviour
         transform.position = _pivotPoint + offset;
         transform.LookAt(_pivotPoint);
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying) return;
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(_pivotPoint, _boundingRadius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(_pivotPoint, 0.04f);
-    }
-#endif
 }

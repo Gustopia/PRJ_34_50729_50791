@@ -1,7 +1,13 @@
+/*
+ * Este script é responsável por gerir o menu principal do jogo, incluindo a
+ * navegação entre cenas, controlo do volume e salvar as preferências do utilizador.
+ */
+
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+// #my_code
 public class MainMenu : MonoBehaviour
 {
     public AudioMixer audioMixer;

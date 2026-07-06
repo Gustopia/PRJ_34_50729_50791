@@ -1,0 +1,83 @@
+----------------------------------------------------
+PROMPTS
+----------------------------------------------------
+
+[VoiceManager.cs] update
+[AudioArea.cs] update
+[AreaActionButton.cs]
+[AreaUIPanel.cs]
+[AreaTitleDisplay.cs]
+
+P1:
+"analisa os scripts (AudioArea.cs, VoiceManager.cs). 
+
+problema:
+- o player passa pelo audio 1 e ouve ate ao fim. o player avança e ouve o audio 2. o player volta para a area do audio 1 e este começa a tocar de novo.
+
+quero que na segunda, terceira, etc. vez em que o player passa por um audio que já ouviu, não o tenha de ouvir, a menos que assim escolha, com um botão ou algo do gênero
+
+problema:
+- o player está a ouvir o audio 1 e para a meio, interrompendo-o. o player avança e começa a ouvir o audio 2. o player volta para trás e ouve o audio 1 do inicio, não donde tinha parado, o mesmo acontece, se voltar para o audio 2 (que ira começar de novo)
+
+quero que o sistema guarde informação de onde todos os audios pararam se for a primeira vez que o player passa por eles
+
+adicionalmente o player pode escolher ouvir o audio do inicio com um botão ou algo do gênero."
+
+P2:
+"ha vários gameobjects com o AudioArea, como faço para o botão?"
+
+P3:
+"-adicionar botão de pausa
+-tornar botões invisíveis, quando player não estiver numa area sem audio
+
+-adicionar titulo, diferente para cada area que aparece quando o player entra e que faz fade out apos um determinado período de tempo (será melhor num script diferente? justificar a escolha)"
+
+----------------------------------------------------
+----------------------------------------------------
+
+[PauseMenu.cs]
+
+"unity 6.4
+
+tarefas:
+ -criar um menu de pausa para as outras cenas (ou seja não na cena do main menu) que pode ser acedido, quando o user clica num botão especifico 
+-adicionar o menu de opções ao menu de pausa 
+-adicionar um botão para voltar ao menu principal no menu de pausa 
+-adicionar um botão de continuar, que tira o jogo da pausa (ou clicando no botão especifico que abre o menu de pausa) 
+
+settings: 
+-volume para outra fonte -ativar/desativar elementos de texto do UI 
+-ativar/desativar um comportamento do player (normalmente ativado pela tecla F mas que quero que passe a ser apenas possível no menu de pausa/settings)"
+
+----------------------------------------------------
+----------------------------------------------------
+
+[SceneAudio.cs]
+[SoundManager.cs] update
+
+"unity 6.4
+analisa os scripts. (ChangeScene.cs, MainMenu.cs, SoundManager.cs)
+no projeto há 3 cenas: 
+-"Menu" -> menu principal com 3 botões, play, quit e options. clicar no play leva para a próxima cena
+-"Olissipo_Superficie" -> contem um objeto interactable que leva para a próxima cena
+-"Olissipo_Galerias" -> contem um objeto interactable que leva para a cena anterior ("Olissipo_Superficie")
+
+É possível voltar à cena "Menu" através de um botão no menu de pausa, presente nas outras duas cenas.
+
+Tenho um problema com os sons e musicas que devem tocar nas cenas diferentes.
+Ao fazer a transição da superfície para as galerias, o som/musica das galerias não toca e ao retornar para a superfície o som/musica da superfície não toca."
+
+----------------------------------------------------
+----------------------------------------------------
+
+[FootstepSurface.cs]
+
+"there's a water shader that's basically a plane. how can i switch the sound of the footsteps when the player comes in contact with the water shader?
+show steps in unity and code."
+
+----------------------------------------------------
+----------------------------------------------------
+
+[OrbitPreviewCamera.cs]
+
+"Cria para Unity 6.4 um sistema de “3D model preview” tipo Fallout 4/Fortnite. Requisitos: câmara orbital com clique + arrastar do rato, zoom com roda do rato, suporte a um modelo único ou a vários filhos de um Empty GameObject, cálculo automático do centro/tamanho pelos Renderers, limites de zoom e ângulo vertical, smoothing e método SetTarget(Transform). Usa o Input System novo. Entrega código C# completo e compilável (OrbitPreviewCamera.cs e auxiliares se necessário), mais instruções de configuração e exemplo de uso numa cena dedicada e numa UI com RenderTexture + RawImage."

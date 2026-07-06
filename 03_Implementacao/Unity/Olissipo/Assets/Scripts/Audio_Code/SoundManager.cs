@@ -1,8 +1,15 @@
+/*
+ * Este script é responsável por gerir os efeitos sonoros e loops de áudio no jogo. 
+ * Permite tocar sons 2D e 3D, bem como gerir loops de som ambiente com fade in/out.
+ * Há suporte para tocar múltiplos loops simultaneamente, sincronizar loops desejados e parar loops existentes.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+// #my_code
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;

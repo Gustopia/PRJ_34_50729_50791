@@ -1,6 +1,13 @@
+/*
+ * Este script gere a reprodução de música no jogo, permitindo crossfade entre faixas e controle de volume.
+ * Permite iniciar, parar e alternar entre diferentes faixas de música com efeitos de fade in/out.
+ * Também garante que apenas uma instância do MusicManager exista durante a execução do jogo.
+ */
+
 using System.Collections;
 using UnityEngine;
 
+// #my_code
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;

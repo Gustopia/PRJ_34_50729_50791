@@ -1,6 +1,13 @@
+/*
+ * Este script é responsável por gerir a reprodução de vozes no jogo, permitindo tocar clipes de áudio, pausar, retomar e reiniciar a reprodução.
+ * Permite controlar a reprodução de vozes em diferentes áreas do jogo, garantindo que apenas uma voz seja reproduzida de cada vez.
+ * Mantém o estado de cada clipe de áudio, permitindo retomar a reprodução de onde parou.
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 
+// #my_code
 public class VoiceManager : MonoBehaviour
 {
     public static VoiceManager Instance;

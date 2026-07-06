@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/*
+ * Este script controla a exibição do título da área no jogo.
+ * Tem um sistema de fade-in e fade-out para mostrar o título da área por um período definido.
+ */
+
+
+using System.Collections;
 using TMPro;
 using UnityEngine;
 

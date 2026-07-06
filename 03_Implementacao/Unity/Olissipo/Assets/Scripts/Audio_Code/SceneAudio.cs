@@ -1,3 +1,8 @@
+/*
+ * Este script é responsável por gerir a música e os sons ambientes de uma cena.
+ * Utiliza o MusicManager para tocar a música da cena e o SoundManager para sincronizar os loops de sons ambientes.
+ */
+
 using UnityEngine;
 
 public class SceneAudio : MonoBehaviour

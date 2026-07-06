@@ -1,6 +1,12 @@
+/*
+ * Este script implementa a interface IInteractable e o comportamento de interação do jogador,
+ * tornando visivel um prompt de interação quando o jogador olha para um objeto interagível.
+ */
+
 using TMPro;
 using UnityEngine;
 
+// #my_code
 public interface IInteractable
 {
     void Interact();
@@ -9,7 +15,7 @@ public interface IInteractable
 
 public class Interactor : MonoBehaviour
 {
-    public Transform InteractorSource;
+    public Transform InteractorSource; // Player cam
     public float InteractRange = 3f;
 
     [Header("UI")]

@@ -1,3 +1,8 @@
+/*
+ * Este script define uma área de áudio no jogo. Quando o jogador entra na área, o áudio 
+ * associado é reproduzido e o título da área é exibido. Quando o jogador sai da área, o áudio pausa.
+ */
+
 using UnityEngine;
 
 public class AudioArea : MonoBehaviour

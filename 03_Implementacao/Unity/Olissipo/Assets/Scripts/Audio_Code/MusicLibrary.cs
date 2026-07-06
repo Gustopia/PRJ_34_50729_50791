@@ -1,5 +1,11 @@
+/*
+ * Este script define uma biblioteca de música que armazena faixas de áudio.
+ * Permite a recuperação de clipes de áudio com base no nome da faixa.
+ */
+
 using UnityEngine;
 
+// #my_code
 [System.Serializable]
 public struct MusicTrack
 {

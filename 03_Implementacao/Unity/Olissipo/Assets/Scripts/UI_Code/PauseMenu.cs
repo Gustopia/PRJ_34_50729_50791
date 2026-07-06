@@ -1,3 +1,10 @@
+/*
+ * Este script é responsável por gerir o menu de pausa do jogo, incluindo a exibição do menu, opções de áudio, toggles de UI e comportamento do jogador.
+ * Permite pausar e retomar o jogo, abrir e fechar o menu de opções, ajustar volumes de música, efeitos sonoros e voz, além de salvar e carregar as preferências do jogador.
+ * Também permite alternar o modo de voo do jogador e a visibilidade da UI do jogador, salvando essas preferências para sessões futuras.
+ * Controla o estado do cursor e a visibilidade da UI do jogador durante a pausa.
+ */
+
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;

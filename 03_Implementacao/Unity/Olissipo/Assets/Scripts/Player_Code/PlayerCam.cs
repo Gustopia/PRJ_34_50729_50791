@@ -1,5 +1,10 @@
+/*
+ * Este script é responsável por controlar a rotação da câmera do jogador com base no movimento do rato.
+*/
+
 using UnityEngine;
 
+// #my_code
 public class PlayerCam : MonoBehaviour
 {
     public float sensX;
