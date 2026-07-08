@@ -7003,6 +7003,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7288602915514373486, guid: 505ae030f22c1ff41975a0780e6d4382, type: 3}
+      propertyPath: spawnPointId
+      value: FromScene2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
