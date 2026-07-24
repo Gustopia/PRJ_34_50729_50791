@@ -11,11 +11,7 @@ Palavra passe: PRJ_34_2026_gb
 3) Correr/executar "Olissipo.exe"
 
 
-Devido a limitação de espaço os ficheiros mais pesados de blender e unity estão num repositorio Git.
-
-Para ter acesso a estes ficheiros do projeto, siga o seguinte link:
-
-https://github.com/Gustopia/PRJ_34_50729_50791
+Devido a limitação de espaço os ficheiros mais pesados de blender e unity estão deste repositório Git.
 
 ## Estrutura do repositório
 
